@@ -118,4 +118,35 @@ public class PlayerInput : MonoBehaviour
         }
         return false;
     }
+    /// <summary>
+    /// 交互按鍵
+    /// </summary>
+    /// <returns></returns>
+    public bool GetKeyDownInteract()
+    {
+        if (CursorIsLock())
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    /// <summary>
+    /// 探測使用(燈光的擴大)
+    /// </summary>
+    /// <returns></returns>
+    public bool GetKeyDownLightControl() {
+        {
+            if (CursorIsLock())
+            {
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 }

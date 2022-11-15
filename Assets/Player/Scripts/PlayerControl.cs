@@ -30,8 +30,10 @@ public class PlayerControl : MonoBehaviour
     public float fallMulti = 2.0f;
     [Header("地面檢測")]
     public LayerMask groundLayer;
+    public LayerMask InteractLayer;
     public float groundCheckOffset = 0.5f;
 
+    public float interactCheckDistance = 1f;
 
     private float walkSpeed = 1.0f;
     private float runSpeed = 2.0f;
@@ -76,6 +78,7 @@ public class PlayerControl : MonoBehaviour
     private readonly float standThreshold = 0.0f;
     private readonly float midAirThreshold = 1.0f;
 
+    private Collider[] colliders = new Collider[5];
     private float gravity;
     Transform playertransform;
     Transform cameraTrasform;
@@ -113,6 +116,7 @@ public class PlayerControl : MonoBehaviour
         Rotate();
         SwitchPlayerState();
         SetAnimator();
+        CheckAroundInteract(); 
     }
 
     private void OnAnimatorMove()
@@ -204,7 +208,6 @@ public class PlayerControl : MonoBehaviour
     {
         if (isGround && playerInput.GetKeyDownJump())
         {
-            Debug.Log("isJump");
             VerticalVelocity = Mathf.Sqrt(-2 * gravity * jumpHeight);
         }
     }
@@ -215,6 +218,27 @@ public class PlayerControl : MonoBehaviour
     {
         if (moveAxis == Vector3.zero) return;
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(cameraAxisMove), rotateSpeed);
+    }
+    /// <summary>
+    /// 查看附近的可交互物件
+    /// </summary>
+    private void CheckAroundInteract()
+    {
+        if (playerInput.GetKeyDownInteract())
+        {
+            int count = Physics.OverlapSphereNonAlloc(transform.position + characterController.center , interactCheckDistance , colliders , InteractLayer);
+            if (count != 0)
+            {
+                for(int i = 0; i < count; i++)
+                {
+                    if (colliders[i].GetComponent<IInteract>() == null)
+                        continue;
+                    colliders[i].GetComponent<IInteract>().Interact();
+                    Debug.Log("Interact");
+                    break;
+                }
+            }
+        }
     }
     /// <summary>
     /// 切換當前狀態
@@ -268,5 +292,10 @@ public class PlayerControl : MonoBehaviour
             animator.SetFloat(VerticalSpeed_Hash, VerticalVelocity, 0.1f, Time.deltaTime);
         }
         animator.SetFloat(Direction_Hash , moveAxis.x );
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * 0.81f  , interactCheckDistance);
     }
 }

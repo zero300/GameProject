@@ -6,8 +6,8 @@ public class TestPlayerControlLoght : MonoBehaviour
 {
     public Light upPlayerLight;
 
-    public float expandSpeed;
-
+    public float expandSpeed = .1f;
+    public float coolDown;
     [Header("SpotLight¨¤«×")]
     public float minlightAngle = 30;
     public float maxlightAngle = 150;
@@ -20,17 +20,20 @@ public class TestPlayerControlLoght : MonoBehaviour
     private bool isLighting;
     private float currentLightRange;
     private float currentLightAngle;
+    private PlayerInput playerInput;
 
-    void Start()
+    void Awake()
     {
-        currentLightAngle= minlightAngle;
+        playerInput=GetComponent<PlayerInput>();
+        currentLightAngle = minlightAngle;
         currentLightRange = minLightRange;
+        coolDown = (maxlightAngle - minlightAngle) / expandSpeed * 2;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) && !isLighting)
+        if (playerInput.GetKeyDownLightControl() && !isLighting)
         {
             StartCoroutine(ExpandLight());
         }
