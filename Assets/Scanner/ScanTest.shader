@@ -59,12 +59,14 @@ Shader "Custom/ScanTest"
                 if (value >= 1 || value <= 0) {
                     value = 0;
                     ringColor = float4(1, 1, 1, 1);
+                    return col;
                 }
                 else
                 {
                     ringColor = lerp(_TrailColor, _HeadColor, value);
+                    
                 }
-                return col * ringColor;
+                return ringColor;
             }
             ENDCG
         }
