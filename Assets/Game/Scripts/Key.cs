@@ -9,8 +9,8 @@ public class Key : MonoBehaviour , IInteract
 
     public void Interact()
     {
-        Debug.Log("¾ß°_Æ_°Í");
-        EventManager.Broadcast(Events.unlockEvent);
+        UnlockEvent newEvent = new UnlockEvent() { KeyCode = keyCode };
+        EventManager.Broadcast(newEvent);
         Destroy(gameObject);
     }
 }

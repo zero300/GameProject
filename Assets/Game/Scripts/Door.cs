@@ -24,9 +24,10 @@ public class Door : MonoBehaviour ,  IInteract
         scaleOfDoor = rightDoor.localScale.x;
         currentPos = scaleOfDoor;
         isMove = false;
-        isLock = true;
 
         if (isLock) EventManager.AddEvents<UnlockEvent>(Unlock);
+
+        
     }
     
     /// <summary>
@@ -37,9 +38,10 @@ public class Door : MonoBehaviour ,  IInteract
     {
         if (evt is not UnlockEvent) return;
 
+
         if(isLock && keyCode == (evt as UnlockEvent).KeyCode)
         {
-            Debug.Log("Unlock the Door");
+
             isLock = false;
         }
     }
@@ -71,7 +73,7 @@ public class Door : MonoBehaviour ,  IInteract
         yield return new WaitForSecondsRealtime(2f);
         Debug.Log("等待結束");
         // 等到底下沒有人的時候 就關門 ，再走進來 還是直接關
-        yield return new WaitUntil( () => !Physics.CheckBox(transform.position + Vector3.up * 1.0f, new Vector3(scaleOfDoor, 1.0f, 1.0f), Quaternion.identity, playerLayer));
+        yield return new WaitUntil( () => !Physics.CheckBox(transform.position + Vector3.up * 2.0f, new Vector3(scaleOfDoor, 2.0f, 1.0f), Quaternion.identity, playerLayer));
         // 關門
         Debug.Log("判斷結束");
         while (currentPos < scaleOfDoor)
