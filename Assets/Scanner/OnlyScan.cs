@@ -22,8 +22,7 @@ public class OnlyScan : MonoBehaviour
     private IEnumerator scanHandler = null;
     private float coolDown;
     private float coolDownCount;
-
-    private float currentDistance;
+    private const float increaseFixedNumber = 2;
     private void OnEnable()
     {
         if (startScanRange > maxScanRange)
@@ -33,10 +32,10 @@ public class OnlyScan : MonoBehaviour
 
         scanRadius = startScanRange;
         Camera.main.depthTextureMode = DepthTextureMode.DepthNormals;
-        currentDistance = startScanRange;
         coolDown = 10;
-    }
 
+        EventManager.AddEvents<UpdateEvent>(IncreaseRadius);
+    }
     void Update()
     {
         if (coolDownCount >= 0)
@@ -44,7 +43,7 @@ public class OnlyScan : MonoBehaviour
             coolDownCount -= Time.deltaTime;
 
         }
-        if (Input.GetKeyDown(KeyCode.J) && coolDownCount <= 0)
+        if (Input.GetMouseButtonDown(0) && coolDownCount <= 0)
         {
             Debug.Log("Start Scan");
             coolDownCount = coolDown;
@@ -55,7 +54,6 @@ public class OnlyScan : MonoBehaviour
             }
         }
     }
-    [ImageEffectAllowedInSceneView]
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
         if (scanMat != null && isInScan)
@@ -154,10 +152,27 @@ public class OnlyScan : MonoBehaviour
         while (scanRadius < maxScanRange)
         {
             scanRadius += scanSpeed;
-            currentDistance += scanSpeed;
             yield return new WaitForSecondsRealtime(.01f);
         }
         isInScan = false;
         scanRadius = startScanRange;
+    }
+
+    /// <summary>
+    /// 提升範圍
+    /// </summary>
+    /// <param name="evt"></param>
+    public void IncreaseRadius(GameEvent evt)
+    {
+        if (evt is not UpdateEvent) return;
+        if ((evt as UpdateEvent).updateType != UpdateType.ScanRange) return;
+        Debug.Log("提升探測距離");
+        //TODO : 可以播放個 升級動畫 聲音之類的
+        maxScanRange += increaseFixedNumber;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.RemoveListener<UpdateEvent>(IncreaseRadius);
     }
 }

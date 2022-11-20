@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
@@ -110,13 +109,19 @@ public class PlayerControl : MonoBehaviour
 
     private void Update()
     {
+        if (transform.position.y < -10.0f)
+        {
+            Debug.Log("GameOver");
+            UnityEditor.EditorApplication.isPlaying = false;
+        }
+           
         HandleParameter();
         CalculateGravity();
         Jump();
         Rotate();
         SwitchPlayerState();
         SetAnimator();
-        CheckAroundInteract(); 
+        CheckAroundInteract();
     }
 
     private void OnAnimatorMove()
@@ -294,8 +299,9 @@ public class PlayerControl : MonoBehaviour
         animator.SetFloat(Direction_Hash , moveAxis.x );
     }
 
-    private void OnDrawGizmosSelected()
+
+    private void OnTriggerEnter(Collider other)
     {
-        Gizmos.DrawWireSphere(transform.position + Vector3.up * 0.81f  , interactCheckDistance);
+        other.GetComponent<IInteract>()?.Interact();
     }
 }

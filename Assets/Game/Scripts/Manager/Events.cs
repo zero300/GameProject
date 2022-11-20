@@ -10,4 +10,14 @@ public static class Events
 public class UnlockEvent : GameEvent {
     public int KeyCode;
 }
+public enum UpdateType
+{
+    ScanRange
+}
+public class UpdateEvent : GameEvent
+{
+    public UpdateType updateType;
+    public float increaseNum;
+}
+
 

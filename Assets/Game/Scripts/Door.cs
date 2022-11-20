@@ -2,31 +2,92 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 鎖住的種類
+/// </summary>
+public enum LockType
+{
+    KeyLock, // 需要觸碰到鑰匙
+    NotLock  // 沒有鎖住
+}
+/// <summary>
+/// 門的總類
+/// </summary>
+public enum DoorType
+{
+    OneWay,//單向
+    TwoWay,//雙向
+    PointDoor, // 存檔點門 , 無法回頭。 開啟後會馬上關閉
+}
+
+
 public class Door : MonoBehaviour ,  IInteract
 {
+    #region 參數
+    
+    [Header("門")]
+    [Tooltip("門的種類")]
+    public DoorType doortype;
+    [Tooltip("是否鎖住，以及鎖住種類")]
+    public LockType lockType;
+    
+    
+    [Header("其餘參數")]
     [Tooltip("開關速度")]
     public float openSpeed;
     public LayerMask playerLayer;
     private float scaleOfDoor;
     private float currentPos;
 
-    
+    private GameObject light;
     private Transform rightDoor;
     private Transform leftDoor;
+    private new BoxCollider collider;
     private bool isMove;
+    [SerializeField] private bool isLock = false;
+    private bool canSave = false;
     [SerializeField] private int keyCode = 0;
-    [SerializeField] private bool isLock;
+    
+    #endregion
 
     private void Awake()
     {
+        light = transform.Find("light").gameObject;
+        light.SetActive(false);
         rightDoor = transform.Find("Right");
         leftDoor = transform.Find("Left");
+        collider = GetComponent<BoxCollider>();
         scaleOfDoor = rightDoor.localScale.x;
         currentPos = scaleOfDoor;
         isMove = false;
 
-        if (isLock) EventManager.AddEvents<UnlockEvent>(Unlock);
-
+        // 是否鎖住
+        switch (lockType) { // 除了沒鎖 就算有其他模式的鎖 應該都算鎖住了
+            case LockType.NotLock:
+                isLock = false;
+                break;
+            default:
+                isLock = true;
+                EventManager.AddEvents<UnlockEvent>(Unlock);
+                break;
+            
+        }
+        // 根據門的種類 做調整
+        switch (doortype)
+        {
+            case DoorType.TwoWay:
+                collider.size = new Vector3(collider.size.x , collider.size.y , 2);
+                break;
+            case DoorType.OneWay:
+                collider.size = new Vector3(collider.size.x, collider.size.y, 1);
+                collider.center = new Vector3(collider.center.x, collider.center.y , 0.5f);
+                break;
+            case DoorType.PointDoor:
+                collider.size = new Vector3(collider.size.x, collider.size.y, 1);
+                collider.center = new Vector3(collider.center.x, collider.center.y, 0.5f);
+                canSave = true;
+                break;
+        }
         
     }
     
@@ -38,19 +99,15 @@ public class Door : MonoBehaviour ,  IInteract
     {
         if (evt is not UnlockEvent) return;
 
-
         if(isLock && keyCode == (evt as UnlockEvent).KeyCode)
-        {
-
             isLock = false;
-        }
     }
 
-    //界面
+    // 交互Interface
     public void Interact()
     {
         if (isMove || isLock) return;
-
+        if (canSave) Debug.Log("TODO : 記得做存檔ˊˇˋ");
         StartCoroutine(OpenAndCloseDoor());
     }
     /// <summary>
@@ -60,6 +117,7 @@ public class Door : MonoBehaviour ,  IInteract
     IEnumerator OpenAndCloseDoor()
     {
         isMove = true;
+        light.SetActive(true);
         while (currentPos > 0)
         {
             currentPos -= openSpeed;
@@ -68,14 +126,13 @@ public class Door : MonoBehaviour ,  IInteract
             yield return new WaitForSecondsRealtime(0.05f);
         }
         currentPos = 0;
-        Debug.Log("開門結束");
         // 確保不要馬上剛開完 就馬上關門。
+        light.SetActive(false);
         yield return new WaitForSecondsRealtime(2f);
-        Debug.Log("等待結束");
         // 等到底下沒有人的時候 就關門 ，再走進來 還是直接關
         yield return new WaitUntil( () => !Physics.CheckBox(transform.position + Vector3.up * 2.0f, new Vector3(scaleOfDoor, 2.0f, 1.0f), Quaternion.identity, playerLayer));
         // 關門
-        Debug.Log("判斷結束");
+        light.SetActive(true);
         while (currentPos < scaleOfDoor)
         {
             currentPos += openSpeed;
@@ -83,13 +140,14 @@ public class Door : MonoBehaviour ,  IInteract
             leftDoor.position += transform.right * openSpeed;
             yield return new WaitForSecondsRealtime(0.1f);
         }
-        Debug.Log("關門結束");
         currentPos = scaleOfDoor;
         isMove = false;
+        light.SetActive(false);
     }
 
     private void OnDestroy()
     {
-        EventManager.RemoveListener<UnlockEvent>(Unlock);
+        if(lockType != LockType.NotLock )
+            EventManager.RemoveListener<UnlockEvent>(Unlock);
     }
 }
