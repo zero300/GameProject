@@ -6,12 +6,18 @@ public class Elevator : MonoBehaviour , IInteract
     public float moveSmooth;
     private Vector3[] Pos;
     private Transform elevatorBase;
+    public Light uplight;
+    public Light downlight;
     private int nextPos;
     private bool isMove;
     private void Awake()
     {
         isMove = false;
         elevatorBase = transform.Find("ElevatorBase");
+        uplight = elevatorBase.transform.Find("uplight").GetComponent<Light>();
+        downlight = elevatorBase.transform.Find("downlight").GetComponent<Light>();
+        TurnOffLight();
+        
         Transform AllPos = transform.Find("MovePos");
         Pos = new Vector3[AllPos.childCount];
         for (int i = 0; i < AllPos.childCount; i++)
@@ -32,7 +38,7 @@ public class Elevator : MonoBehaviour , IInteract
     {
         isMove = true;
         Vector3 next = Pos[nextPos];
-        // 要不燃直接向上 來不及反應， 可能在播個電梯啟動的聲音
+        TurnOnLight();
         yield return new WaitForSecondsRealtime(1.0f);
         while (elevatorBase.position != next)
         {
@@ -42,6 +48,19 @@ public class Elevator : MonoBehaviour , IInteract
         nextPos++;
         if (nextPos >= Pos.Length)
             nextPos = 0;
+        TurnOffLight();
         isMove = false;
     }
+
+    private void TurnOnLight()
+    {
+        uplight.enabled = true;
+        downlight.enabled = true;
+    }
+    private void TurnOffLight()
+    {
+        uplight.enabled = false;
+        downlight.enabled = false;
+    }
+
 }

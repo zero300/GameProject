@@ -39,7 +39,7 @@ public class Door : MonoBehaviour ,  IInteract
     private float scaleOfDoor;
     private float currentPos;
 
-    private GameObject light;
+    private new GameObject light;
     private Transform rightDoor;
     private Transform leftDoor;
     private new BoxCollider collider;
