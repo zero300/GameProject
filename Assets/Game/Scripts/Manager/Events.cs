@@ -6,6 +6,7 @@ public static class Events
 {
     public static UnlockEvent unlockEvent = new UnlockEvent();
     public static MakeSoundEvent makeSoundEvent = new MakeSoundEvent();
+    public static ArchieveEndPointEvent archieveEndPoint = new ArchieveEndPointEvent();
 }
 
 public class UnlockEvent : GameEvent {
@@ -36,7 +37,15 @@ public enum SoundVolumn {
 public class MakeSoundEvent : GameEvent 
 {
     public SoundVolumn volumn;
-    public Vector3 MakeSoundPos; 
+    public Vector3 MakeSoundPos;
+}
+
+public class ArchieveEndPointEvent : GameEvent 
+{ }
+
+public class DisplayMessageEvent : GameEvent 
+{
+    public string msg;
 }
 
 

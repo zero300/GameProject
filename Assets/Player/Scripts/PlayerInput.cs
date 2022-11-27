@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-
-
-    void Start()
+    void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

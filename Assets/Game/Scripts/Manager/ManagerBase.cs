@@ -2,7 +2,8 @@ using UnityEngine;
 
 public abstract class ManagerBase 
 {
-    protected abstract void InitManager();
-    protected abstract void UpdateManager();
-    protected abstract void DestroyManager();
+    protected GameFacade facade;
+    public abstract void InitManager();
+    public abstract void UpdateManager();
+    public abstract void DestroyManager();
 }

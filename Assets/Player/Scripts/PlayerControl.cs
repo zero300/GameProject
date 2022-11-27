@@ -36,7 +36,7 @@ public class PlayerControl : MonoBehaviour
 
     private float walkSpeed = 1.0f;
     private float runSpeed = 2.0f;
-    private float airmoveSpeed = 0.8f;
+    //private float airmoveSpeed = 0.8f;
 
     [Header("¥¬ªL°Ñ¼Æ")]
     [SerializeField] private bool isGround;

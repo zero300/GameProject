@@ -3,9 +3,18 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager :ManagerBase
 {
+    public GameManager(GameFacade facade)
+    {
+        this.facade = facade;
+    }
     private Vector3 SavePoint;
+
+    public override void InitManager()
+    {
+        Debug.Log("Initial GameManager");
+    }
 
 
     /// <summary>
@@ -21,5 +30,15 @@ public class GameManager : MonoBehaviour
     public void ContinueGame()
     {
         Time.timeScale = 1;
+    }
+
+    
+    public override void UpdateManager()
+    {
+    }
+
+    public override void DestroyManager()
+    {
+        
     }
 }

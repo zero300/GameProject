@@ -4,19 +4,27 @@ using UnityEngine;
 
 public class AudioManager : ManagerBase
 {
+    public AudioManager(GameFacade gameFacade)
+    {
+        this.facade = gameFacade;
+    }
+
+
 
     private AudioSource BG_audioSource;
     private AudioSource GO_audioSource;
 
     private const string prefix = "Sounds/";
     
-    protected override void InitManager()
+    public  override void InitManager()
     {
         GameObject obj1 = new GameObject("BG_AudioSource");
         GameObject obj2 = new GameObject("GO_AudioSource");
         BG_audioSource = obj1.AddComponent<AudioSource>();
         GO_audioSource = obj2.AddComponent<AudioSource>();
 
+        obj1.transform.SetParent(facade.transform);
+        obj2.transform.SetParent(facade.transform);
         //TODO 播放背景音樂
     }
     /// <summary>
@@ -88,13 +96,13 @@ public class AudioManager : ManagerBase
     private AudioClip LoadAudioClip(string name) => Resources.Load<AudioClip>(prefix + name);
 
     // 目前用不到
-    protected override void UpdateManager()
+    public override void UpdateManager()
     {
 
     }
-    // 目前用不到
-    protected override void DestroyManager()
+    public override void DestroyManager()
     {
-           
+        GameObject.Destroy(BG_audioSource.gameObject);
+        GameObject.Destroy(GO_audioSource.gameObject);
     }
 }
