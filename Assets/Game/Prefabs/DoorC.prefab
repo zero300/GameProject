@@ -253,7 +253,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doortype: 1
-  lockType: 0
+  lockType: 1
+  SoundEffect: {fileID: 1965986149289340669, guid: 94b1d2e4e5deea84c8cd554f60949c2a, type: 3}
   openSpeed: 0.1
   playerLayer:
     serializedVersion: 2

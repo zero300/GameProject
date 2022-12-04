@@ -30,6 +30,7 @@ public class Door : MonoBehaviour ,  IInteract
     public DoorType doortype;
     [Tooltip("是否鎖住，以及鎖住種類")]
     public LockType lockType;
+    public GameObject SoundEffect; //Drag SoundPrefab here
     
     
     [Header("其餘參數")]
@@ -108,6 +109,7 @@ public class Door : MonoBehaviour ,  IInteract
     {
         if (isMove || isLock) return;
         if (canSave) Debug.Log("TODO : 記得做存檔ˊˇˋ");
+        Instantiate(SoundEffect, this.transform.position, this.transform.rotation); //Create sound prefab
         StartCoroutine(OpenAndCloseDoor());
     }
     /// <summary>
@@ -118,6 +120,7 @@ public class Door : MonoBehaviour ,  IInteract
     {
         isMove = true;
         light.SetActive(true);
+        
         while (currentPos > 0)
         {
             currentPos -= openSpeed;

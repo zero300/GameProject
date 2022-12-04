@@ -8,11 +8,13 @@ public class Elevator : MonoBehaviour , IInteract
     private Transform elevatorBase;
     public Light uplight;
     public Light downlight;
+    public GameObject SoundEffect;
     private int nextPos;
     private bool isMove;
     private void Awake()
     {
         isMove = false;
+        SoundEffect.SetActive(false);
         elevatorBase = transform.Find("ElevatorBase");
         uplight = elevatorBase.transform.Find("uplight").GetComponent<Light>();
         downlight = elevatorBase.transform.Find("downlight").GetComponent<Light>();
@@ -37,6 +39,7 @@ public class Elevator : MonoBehaviour , IInteract
     IEnumerator ElevatorMove()
     {
         isMove = true;
+        SoundEffect.SetActive(true);
         Vector3 next = Pos[nextPos];
         TurnOnLight();
         yield return new WaitForSecondsRealtime(1.0f);
@@ -50,6 +53,7 @@ public class Elevator : MonoBehaviour , IInteract
             nextPos = 0;
         TurnOffLight();
         isMove = false;
+        SoundEffect.SetActive(false);
     }
 
     private void TurnOnLight()
