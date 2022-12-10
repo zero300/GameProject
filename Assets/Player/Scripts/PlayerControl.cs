@@ -334,4 +334,9 @@ public class PlayerControl : MonoBehaviour
     {
         other.GetComponent<IInteract>()?.Interact();
     }
+
+    public bool Ground()
+    {
+        return isGround;
+    }
 }
