@@ -398,6 +398,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Elevator_Controler
       objectReference: {fileID: 0}
+    - target: {fileID: 2405851994583027461, guid: f76378e8766febb4a8e5385547e6fc8f, type: 3}
+      propertyPath: moveSmooth
+      value: 0.01
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f76378e8766febb4a8e5385547e6fc8f, type: 3}
 --- !u!1 &488927288

@@ -46,7 +46,7 @@ public class Elevator : MonoBehaviour , IInteract
         while (elevatorBase.position != next)
         {
             elevatorBase.position = Vector3.MoveTowards(elevatorBase.position , next , moveSmooth);
-            yield return new WaitForSecondsRealtime(.05f);
+            yield return new WaitForSecondsRealtime(.005f);
         }
         nextPos++;
         if (nextPos >= Pos.Length)
