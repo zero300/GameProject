@@ -9,7 +9,7 @@ public class GameFacade : MonoBehaviour
 {
     //單例
     private static GameFacade _instance;
-    public static GameFacade Instance{ get { return _instance; } }
+    public static GameFacade Instance{  get  { return _instance; } }
     
     private AudioManager _audioManager;
     private GameManager _gameManager;
@@ -49,7 +49,6 @@ public class GameFacade : MonoBehaviour
         _uimanager = new UIManager(this);
         _sceneManager = new TheSceneManager(this);
 
-
         _audioManager.InitManager();
         _gameManager.InitManager();
         _uimanager.InitManager();
@@ -80,6 +79,7 @@ public class GameFacade : MonoBehaviour
     #region 傳遞給其底下的Manager
 
     #region TheSceneManager
+    public SceneIndex GetCurrentScene() => _sceneManager.CurrentScene;
     /// <summary>
     /// 載入場景
     /// </summary>
@@ -104,6 +104,52 @@ public class GameFacade : MonoBehaviour
     public void RemoveActionAfterSceneLoad(Action action)
     {
         _sceneManager.RemoveActionAfterSceneLoad(action);
+    }
+    #endregion
+
+    #region GameManager
+    /// <summary>
+    /// 暫停遊戲
+    /// </summary>
+    public void PauseGame()
+    {
+        _gameManager.PauseGame();
+    }
+    /// <summary>
+    /// 繼續遊戲
+    /// </summary>
+    /// </summary>
+    public void ContinueGame()
+    {
+        _gameManager.ContinueGame();
+    }
+    /// <summary>
+    /// 改變模式
+    /// </summary>
+    /// <param name="isEasy"></param>
+    public void ChangeLight(bool isEasy)
+    {
+        _gameManager.ChangeGameMode(isEasy);
+    }
+    /// <summary>
+    /// 重新開始遊戲 , 根據存檔點
+    /// </summary>
+    /// <param name="index"></param>
+    public void RestartGame(SceneIndex index)
+    {
+        _gameManager.RestartGame(index);
+    }
+
+    #endregion
+
+    #region UIManager
+    /// <summary>
+    /// 推出panel
+    /// </summary>
+    /// <param name="type"></param>
+    public void PushPanel(UIPanelType type)
+    {
+        _uimanager.PushPanel(type);
     }
     #endregion
 

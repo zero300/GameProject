@@ -12,6 +12,9 @@ public enum SceneIndex
 }
 public class TheSceneManager : ManagerBase
 {
+    private SceneIndex _currentScene;
+    public SceneIndex CurrentScene { get { return _currentScene; } }
+
     private Action aftersceneload;
     // GameFacade facade
     public TheSceneManager(GameFacade facade)
@@ -24,6 +27,7 @@ public class TheSceneManager : ManagerBase
     /// <param name="index"></param>
     public void LoadScene(SceneIndex index)
     {
+        _currentScene = index;
         SceneManager.LoadScene( (int)index );
     }
     /// <summary>
@@ -33,7 +37,7 @@ public class TheSceneManager : ManagerBase
     /// <param name="mode"></param>
     private void SceneLoaded(Scene scene , LoadSceneMode mode)
     {
-        aftersceneload.Invoke();
+        aftersceneload?.Invoke();
         aftersceneload = null;
     }
     /// <summary>

@@ -139,7 +139,7 @@ public class PlayerInput : MonoBehaviour
         {
             if (CursorIsLock())
             {
-                if (Input.GetKeyDown(KeyCode.P))
+                if (Input.GetMouseButtonDown(0))
                 {
                     return true;
                 }

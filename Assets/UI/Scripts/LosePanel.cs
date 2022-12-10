@@ -1,46 +1,31 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ContinuePanel : BasePanel
+public class LosePanel : BasePanel
 {
-    private Button ContinueButton;
     private Button RestartButton;
     private Button ExitButton;
-    void Awake()
+
+    void Start()
     {
-        ContinueButton = transform.Find("ContinueButton").GetComponent<Button>();
         RestartButton = transform.Find("RestartButton").GetComponent<Button>();
         ExitButton = transform.Find("ExitButton").GetComponent<Button>();
 
-        ContinueButton.onClick.AddListener(ContinueButtonCallback);
         RestartButton.onClick.AddListener(RestartButtonCallback);
         ExitButton.onClick.AddListener(ExitButtonCallback);
     }
 
-    // NextStage
-    private void ContinueButtonCallback()
-    {
-        facade.AddActionAfterSceneLoad(PushLevel1NeedPanel);
-        facade.LoadScene(facade.GetCurrentScene() + 1);      
-    }
-    // is win so init
     private void RestartButtonCallback()
     {
-        facade.LoadScene(facade.GetCurrentScene());
+        facade.RestartGame(facade.GetCurrentScene() );
     }
     private void ExitButtonCallback()
     {
         facade.LoadScene(SceneIndex.Title);
     }
-    private void PushLevel1NeedPanel()
-    {
-        Debug.Log("Level1 Need");
-    }
+
     public override void OnEnter()
     {
-        if (Enum.GetName(typeof(SceneIndex), facade.GetCurrentScene() + 1) == null) ContinueButton.enabled = false;
-        else ContinueButton.enabled = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         gameObject.SetActive(true);
@@ -53,8 +38,6 @@ public class ContinuePanel : BasePanel
     }
     public override void OnResume()
     {
-        if (Enum.GetName(typeof(SceneIndex), facade.GetCurrentScene() + 1) == null) ContinueButton.enabled = false;
-        else ContinueButton.enabled = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         gameObject.SetActive(true);

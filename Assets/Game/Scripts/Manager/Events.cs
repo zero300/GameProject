@@ -39,13 +39,15 @@ public class MakeSoundEvent : GameEvent
     public SoundVolumn volumn;
     public Vector3 MakeSoundPos;
 }
-
 public class ArchieveEndPointEvent : GameEvent 
 { }
-
 public class DisplayMessageEvent : GameEvent 
 {
     public string msg;
+}
+public class CheckpointEvent : GameEvent
+{
+    public Vector3 checkpoint;
 }
 
 

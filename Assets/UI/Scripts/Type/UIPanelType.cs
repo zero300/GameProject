@@ -2,5 +2,7 @@ public enum UIPanelType
 {
     None,
     TitlePanel,
-    ContinuePanel
+    ContinuePanel,
+    PausePanel,
+    LosePanel
 }

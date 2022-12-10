@@ -34,6 +34,7 @@ public class PlayerControl : MonoBehaviour
 
     public float interactCheckDistance = 1f;
 
+    private float moveSpeedMulti;
     private float walkSpeed = 1.0f;
     private float runSpeed = 2.0f;
     //private float airmoveSpeed = 0.8f;
@@ -109,37 +110,42 @@ public class PlayerControl : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+            GameFacade.Instance.PushPanel(UIPanelType.PausePanel);
+        if (Input.GetKeyDown(KeyCode.L))
+            GameFacade.Instance.PushPanel(UIPanelType.LosePanel);
         if (transform.position.y < -10.0f)
         {
-            Debug.Log("GameOver");
-            UnityEditor.EditorApplication.isPlaying = false;
+            Destroy(gameObject);
+            GameFacade.Instance.PushPanel(UIPanelType.LosePanel);
         }
-           
         HandleParameter();
         CalculateGravity();
         Jump();
         Rotate();
+        CalculateVeclocity();
         SwitchPlayerState();
         SetAnimator();
         CheckAroundInteract();
+        
     }
 
-    private void OnAnimatorMove()
-    {
-        if (Posture == PlayerPosture.Stand)
-        {
-            CharacterVelocity = animator.deltaPosition;
-            CharacterVelocity.y = VerticalVelocity * Time.deltaTime;
-            characterController.Move(CharacterVelocity);
-            average = AverageVelocity(animator.velocity);
-        }
-        else if (Posture == PlayerPosture.MidAir)
-        {
-            average.y = VerticalVelocity;
-            CharacterVelocity = average * Time.deltaTime;
-            characterController.Move(CharacterVelocity);
-        }
-    }
+    //private void OnAnimatorMove()
+    //{
+    //    if (Posture == PlayerPosture.Stand)
+    //    {
+    //        CharacterVelocity = animator.deltaPosition;
+    //        CharacterVelocity.y = VerticalVelocity * Time.deltaTime;
+    //        characterController.Move(CharacterVelocity);
+    //        average = AverageVelocity(animator.velocity);
+    //    }
+    //    else if (Posture == PlayerPosture.MidAir)
+    //    {
+    //        average.y = VerticalVelocity;
+    //        CharacterVelocity = average * Time.deltaTime;
+    //        characterController.Move(CharacterVelocity);
+    //    }
+    //}
     #endregion
 
     /// <summary>
@@ -225,13 +231,34 @@ public class PlayerControl : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(cameraAxisMove), rotateSpeed);
     }
     /// <summary>
+    /// 計算速度(Update)
+    /// </summary>
+    private void CalculateVeclocity()
+    {
+        if (Posture == PlayerPosture.Stand)
+        {
+            
+            CharacterVelocity = cameraAxisMove * moveSpeed * moveSpeedMulti *  Time.deltaTime;
+            CharacterVelocity.y = VerticalVelocity * Time.deltaTime;
+            characterController.Move(CharacterVelocity);
+            average = AverageVelocity( new Vector3(CharacterVelocity.x , 0 , CharacterVelocity.z ) ) ;
+        }
+        else if (Posture == PlayerPosture.MidAir)
+        {
+            CharacterVelocity = average;
+            CharacterVelocity.y = VerticalVelocity * Time.deltaTime;
+            characterController.Move(CharacterVelocity );
+        }
+    }
+    /// <summary>
     /// 查看附近的可交互物件
     /// </summary>
     private void CheckAroundInteract()
     {
         if (playerInput.GetKeyDownInteract())
         {
-            int count = Physics.OverlapSphereNonAlloc(transform.position + characterController.center , interactCheckDistance , colliders , InteractLayer);
+            int count = Physics.OverlapSphereNonAlloc(transform.position + characterController.center 
+                , interactCheckDistance , colliders , InteractLayer,QueryTriggerInteraction.Ignore);
             if (count != 0)
             {
                 for(int i = 0; i < count; i++)
@@ -254,14 +281,17 @@ public class PlayerControl : MonoBehaviour
             Posture = PlayerPosture.Stand;
             if (moveAxis.sqrMagnitude == 0)
             {
+                moveSpeedMulti = 0;
                 locomotionState = LocomotionState.Idle;
             }
             else if (!isRun)
             {
+                moveSpeedMulti = walkSpeed;
                 locomotionState = LocomotionState.Walk;
             }
             else
             {
+                moveSpeedMulti = runSpeed;
                 locomotionState = LocomotionState.Run;
             }
         }

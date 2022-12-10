@@ -337,7 +337,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -404,6 +403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2dabbc8fdcf6645a3a43d8c539544b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skyBoxMaterial: {fileID: 2100000, guid: 79bc95c4c2e412341bb1033f9110b732, type: 2}
 --- !u!4 &1617683706
 Transform:
   m_ObjectHideFlags: 0

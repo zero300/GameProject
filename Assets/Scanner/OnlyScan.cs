@@ -7,6 +7,7 @@ public class OnlyScan : MonoBehaviour
 
     public float coolDownOffset = 2.0f;
     public Transform player;
+    private PlayerInput playerInput;
     [Header("¥þ§½±½´y")]
     public Material scanMat;
     public float startScanRange = 0;
@@ -20,8 +21,6 @@ public class OnlyScan : MonoBehaviour
     private Vector3 centerPos;
     private float scanRadius;
     private IEnumerator scanHandler = null;
-    private float coolDown;
-    private float coolDownCount;
     private const float increaseFixedNumber = 2;
     private void OnEnable()
     {
@@ -32,21 +31,13 @@ public class OnlyScan : MonoBehaviour
 
         scanRadius = startScanRange;
         Camera.main.depthTextureMode = DepthTextureMode.DepthNormals;
-        coolDown = 10;
-
+        playerInput = player.GetComponent<PlayerInput>();
         EventManager.AddEvents<UpdateEvent>(IncreaseRadius);
     }
     void Update()
     {
-        if (coolDownCount >= 0)
+        if (playerInput.GetKeyDownLightControl() && !isInScan)
         {
-            coolDownCount -= Time.deltaTime;
-
-        }
-        if (Input.GetMouseButtonDown(0) && coolDownCount <= 0)
-        {
-            Debug.Log("Start Scan");
-            coolDownCount = coolDown;
             centerPos = player.position;
             if (scanRadius <= startScanRange)
             {
@@ -134,7 +125,6 @@ public class OnlyScan : MonoBehaviour
     }
     void CheckAndBlock()
     {
-
         if (scanHandler != null)
             StopCoroutine(scanHandler);
     }

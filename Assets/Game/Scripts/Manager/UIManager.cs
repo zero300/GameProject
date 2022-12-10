@@ -16,10 +16,12 @@ public class UIManager : ManagerBase
     public override void DestroyManager()
     {
         Debug.Log("刪除UIManager");
+        EventManager.RemoveListener<ArchieveEndPointEvent>(LevelWin);
     }
     public override void InitManager()
     {
         PushPanel(UIPanelType.TitlePanel);
+        EventManager.AddEvents<ArchieveEndPointEvent>(LevelWin);
     }
     public override void UpdateManager()
     {
@@ -93,6 +95,12 @@ public class UIManager : ManagerBase
                 case UIPanelType.ContinuePanel:
                     path = "UIPanel/" + "ContinuePanel";
                     break;
+                case UIPanelType.PausePanel:
+                    path = "UIPanel/" + "PausePanel";
+                    break;
+                case UIPanelType.LosePanel:
+                    path = "UIPanel/" + "LosePanel";
+                    break;
                 default:
                     return null;
             }
@@ -121,27 +129,8 @@ public class UIManager : ManagerBase
         panelDict.Clear();
     }
 
-
-    //public void InjectMsgPanel(MessagePanel msgPanel)
-    //{
-    //    messagePanel = msgPanel;
-    //}
-
-    //public void ShowMessageSync(string msg)
-    //{
-    //    if (msg == null)
-    //    {
-    //        Debug.LogError("UIManager.ShowMessageSync Error: msg不能為null");
-    //        return;
-    //    }
-
-    //    messagePanel.ShowMessageSync(msg);
-    //}
-    //public void ShowMessage(string msg)
-    //{
-    //    if (messagePanel != null)
-    //        messagePanel.ShowMessage(msg);
-    //    else
-    //        Debug.LogError("Error : UIManager.ShowMesssage : messagePanel is  equals to null");
-    //}
+    public void LevelWin(ArchieveEndPointEvent evt)
+    {
+        PushPanel(UIPanelType.ContinuePanel);
+    }
 }

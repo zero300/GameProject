@@ -8,6 +8,8 @@ public class TitlePanel : BasePanel
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         startButton = transform.Find("StartButton").GetComponent<Button>();
         exitButton = transform.Find("ExitButton").GetComponent<Button>();
 
@@ -16,7 +18,7 @@ public class TitlePanel : BasePanel
     }
     private void StartButtonCallback()
     {
-        facade.AddActionAfterSceneLoad(PushDemoNeedPanel);
+        //facade.AddActionAfterSceneLoad(PushDemoNeedPanel);
         facade.LoadScene(SceneIndex.Demo);
     }
     private void ExitButtonCallback()
