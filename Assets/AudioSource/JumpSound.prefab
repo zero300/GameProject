@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1170599866435144285}
   - component: {fileID: 851237638496177418}
+  - component: {fileID: 4734663438127491367}
   m_Layer: 3
   m_Name: JumpSound
   m_TagString: Untagged
@@ -128,3 +129,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4734663438127491367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2976833805772926107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dd4305a69740014fa53ca8b6ca32e43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
