@@ -15,7 +15,7 @@ public enum LockType
 /// </summary>
 public enum DoorType
 {
-    OneWay,//單向
+    OneWay,//單向 , z軸方向 可以通過
     TwoWay,//雙向
     PointDoor, // 存檔點門 , 無法回頭。 開啟後會馬上關閉
 }
@@ -108,7 +108,7 @@ public class Door : MonoBehaviour ,  IInteract
     public void Interact()
     {
         if (isMove || isLock) return;
-        if (canSave) Debug.Log("TODO : 記得做存檔ˊˇˋ");
+        if (canSave) EventManager.Broadcast(new CheckpointEvent() { checkpoint = transform.position });
         Instantiate(SoundEffect, this.transform.position, this.transform.rotation); //Create sound prefab
         StartCoroutine(OpenAndCloseDoor());
     }

@@ -4,19 +4,46 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum RestartMode
+{
+    /// <summary>
+    /// 從頭開始
+    /// </summary>
+    FromScratch,
+    /// <summary>
+    /// 從存檔點開始
+    /// </summary>
+    FromCheckPoint
+}
 public class GameManager :ManagerBase
 {
+    
     public GameManager(GameFacade facade)
     {
         this.facade = facade;
     }
+    // Player 
     private Transform PlayerTransform;
     private Vector3 SavePoint;
+    private PlayerProperty playerProperty;
+    
     private bool _gameModeIsEasy = false;
     private Light _directionalLight;
 
+    /// <summary>
+    /// 獲取PlayerProperty
+    /// </summary>
+    /// <returns></returns>
+    public PlayerProperty GetPlayerProperty() => playerProperty;
+    /// <summary>
+    /// 獲取關卡模式
+    /// </summary>
+    /// <returns></returns>
+    public bool GetisEasy() => _gameModeIsEasy;
+
     public override void InitManager()
     {
+        playerProperty = ScriptableObject.CreateInstance<PlayerProperty>();
         EventManager.AddEvents<CheckpointEvent>(SetSavePoint);
     }
 
@@ -66,9 +93,14 @@ public class GameManager :ManagerBase
     /// <summary>
     /// 重新開始遊戲 但會根據存檔點位置復活
     /// </summary>
-    public void RestartGame(SceneIndex index)
+    public void RestartGame(RestartMode mode , SceneIndex index)
     {
-        facade.AddActionAfterSceneLoad(InitPlayerPosWithSavePoint);
+        
+        Debug.Log($"PlayerProperty\nMaxScanRange = {playerProperty.maxScanRange}\n" +
+            $"ScanWidth = {playerProperty.scanWidth}\n,ScanSpeed = {playerProperty.scanSpeed}");
+
+        if(mode == RestartMode.FromCheckPoint) facade.AddActionAfterSceneLoad(InitPlayerPosWithSavePoint);
+
         facade.AddActionAfterSceneLoad(ChangeGlobalLight);
         facade.LoadScene(index);
     }

@@ -17,7 +17,7 @@ public class LosePanel : BasePanel
 
     private void RestartButtonCallback()
     {
-        facade.RestartGame(facade.GetCurrentScene() );
+        facade.RestartGame( RestartMode.FromCheckPoint , facade.GetCurrentScene() );
     }
     private void ExitButtonCallback()
     {

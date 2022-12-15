@@ -64,9 +64,6 @@ public class PlayerControl : MonoBehaviour
     float VerticalVelocity;
 
     //空中控制
-    const int CACHE_SIZE = 3;
-    int currentIndex;
-    Vector3[] averageVel = new Vector3[CACHE_SIZE];
     Vector3 average;
 
     //動畫Hash值
@@ -80,7 +77,6 @@ public class PlayerControl : MonoBehaviour
 
     private Collider[] colliders = new Collider[5];
     private float gravity;
-    Transform playertransform;
     Transform cameraTrasform;
     PlayerInput playerInput;
     Animator animator;
@@ -90,7 +86,6 @@ public class PlayerControl : MonoBehaviour
     #region Mono函式(Start Update...)
     void Start()
     {
-        playertransform = transform;
         cameraTrasform = Camera.main.transform;
         gravity = Physics.gravity.y;
        // 獲取組件
@@ -197,22 +192,6 @@ public class PlayerControl : MonoBehaviour
         }
     }
     /// <summary>
-    /// 平均幾幀的速度
-    /// </summary>
-    /// <param name="newVelocity"></param>
-    /// <returns></returns>
-    private Vector3 AverageVelocity(Vector3 newVelocity)
-    {
-        averageVel[currentIndex] = newVelocity;
-        currentIndex++;
-        currentIndex %= CACHE_SIZE;
-        Vector3 average = Vector3.zero;
-        for(int i = 0; i < CACHE_SIZE; i++) {
-            average += averageVel[i];
-        }
-        return average/ CACHE_SIZE;
-    }
-    /// <summary>
     /// 判斷跳躍 並附值
     /// </summary>
     public void Jump()
@@ -241,7 +220,7 @@ public class PlayerControl : MonoBehaviour
             CharacterVelocity = cameraAxisMove * moveSpeed * moveSpeedMulti *  Time.deltaTime;
             CharacterVelocity.y = VerticalVelocity * Time.deltaTime;
             characterController.Move(CharacterVelocity);
-            average = AverageVelocity( new Vector3(CharacterVelocity.x , 0 , CharacterVelocity.z ) ) ;
+            average = CharacterVelocity;
         }
         else if (Posture == PlayerPosture.MidAir)
         {

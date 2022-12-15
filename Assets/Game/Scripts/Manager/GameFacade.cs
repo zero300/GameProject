@@ -135,11 +135,17 @@ public class GameFacade : MonoBehaviour
     /// 重新開始遊戲 , 根據存檔點
     /// </summary>
     /// <param name="index"></param>
-    public void RestartGame(SceneIndex index)
+    public void RestartGame(RestartMode mode, SceneIndex index)
     {
-        _gameManager.RestartGame(index);
+        _gameManager.RestartGame(mode , index);
     }
+    /// <summary>
+    /// 獲取PlayerProperty
+    /// </summary>
+    /// <returns></returns>
+    public PlayerProperty GetPlayerProperty() => _gameManager.GetPlayerProperty();
 
+    public bool GetisEasy() => _gameManager.GetisEasy();
     #endregion
 
     #region UIManager

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class OnlyScan : MonoBehaviour
 {
+    public bool isTest = true;
 
+    public PlayerProperty playerProperty;
     public float coolDownOffset = 2.0f;
     public Transform player;
     private PlayerInput playerInput;
@@ -28,11 +30,20 @@ public class OnlyScan : MonoBehaviour
             throw new Exception("CameraScanner.cs : startScanRange 不能大於 maxScanRange");
         if (scanMat == null )
             throw new Exception("CameraScanner.cs : scanMat 不能為 null ");
+        //附值
+        if (!isTest)
+        {
+            playerProperty = GameFacade.Instance.GetPlayerProperty();
+            maxScanRange = playerProperty.maxScanRange;
+            scanWidth = playerProperty.scanWidth;
+            scanSpeed = playerProperty.scanSpeed;
+        }
 
         scanRadius = startScanRange;
         Camera.main.depthTextureMode = DepthTextureMode.DepthNormals;
         playerInput = player.GetComponent<PlayerInput>();
         EventManager.AddEvents<UpdateEvent>(IncreaseRadius);
+        if(!isTest) EventManager.AddEvents<CheckpointEvent>(UpdateScanDataPassCheckPoint);
     }
     void Update()
     {
@@ -160,9 +171,19 @@ public class OnlyScan : MonoBehaviour
         //TODO : 可以播放個 升級動畫 聲音之類的
         maxScanRange += increaseFixedNumber;
     }
-
+    /// <summary>
+    /// 當經過Checkpoint ，更新強化過的資料
+    /// </summary>
+    /// <param name="evt"></param>
+    public void UpdateScanDataPassCheckPoint(CheckpointEvent evt)
+    {
+        playerProperty.maxScanRange = maxScanRange;
+        playerProperty.scanWidth = scanWidth;
+        playerProperty.scanSpeed = scanSpeed;
+    }
     private void OnDestroy()
     {
         EventManager.RemoveListener<UpdateEvent>(IncreaseRadius);
+        EventManager.RemoveListener<CheckpointEvent>(UpdateScanDataPassCheckPoint);
     }
 }

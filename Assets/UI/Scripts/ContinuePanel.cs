@@ -21,13 +21,13 @@ public class ContinuePanel : BasePanel
     // NextStage
     private void ContinueButtonCallback()
     {
-        facade.AddActionAfterSceneLoad(PushLevel1NeedPanel);
-        facade.LoadScene(facade.GetCurrentScene() + 1);      
+        //facade.AddActionAfterSceneLoad(PushLevel1NeedPanel); 
+        facade.RestartGame(RestartMode.FromScratch, facade.GetCurrentScene() + 1);       
     }
     // is win so init
     private void RestartButtonCallback()
     {
-        facade.LoadScene(facade.GetCurrentScene());
+        facade.RestartGame(RestartMode.FromScratch, facade.GetCurrentScene());
     }
     private void ExitButtonCallback()
     {

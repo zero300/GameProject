@@ -16,3 +16,6 @@ MonoBehaviour:
   Hp: 10
   MaxEnergy: 10
   Energy: 10
+  maxScanRange: 20
+  scanWidth: 5
+  scanSpeed: 0.05
