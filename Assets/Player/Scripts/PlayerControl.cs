@@ -67,19 +67,19 @@ public class PlayerControl : MonoBehaviour
     Vector3 average;
 
     //動畫Hash值
-    private int State_Hash;
-    private int Speed_Hash;
-    private int Direction_Hash;
-    private int VerticalSpeed_Hash;
+    //private int State_Hash;
+    //private int Speed_Hash;
+    //private int Direction_Hash;
+    //private int VerticalSpeed_Hash;
 
-    private readonly float standThreshold = 0.0f;
-    private readonly float midAirThreshold = 1.0f;
+    //private readonly float standThreshold = 0.0f;
+    //private readonly float midAirThreshold = 1.0f;
 
     private Collider[] colliders = new Collider[5];
     private float gravity;
     Transform cameraTrasform;
     PlayerInput playerInput;
-    Animator animator;
+    //Animator animator;
     CharacterController characterController;
     #endregion
 
@@ -90,17 +90,17 @@ public class PlayerControl : MonoBehaviour
         gravity = Physics.gravity.y;
        // 獲取組件
         playerInput = GetComponent<PlayerInput>();
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
         
         // 根據骨骼調整動畫速度
-        animator.SetFloat("MoveFactor", 1 / animator.humanScale);
+        //animator.SetFloat("MoveFactor", 1 / animator.humanScale);
         
         // 獲得哈希值
-        State_Hash = Animator.StringToHash("State");
-        Speed_Hash = Animator.StringToHash("Speed");
-        Direction_Hash = Animator.StringToHash("Direction");
-        VerticalSpeed_Hash = Animator.StringToHash("VerticalSpeed");
+        //State_Hash = Animator.StringToHash("State");
+        //Speed_Hash = Animator.StringToHash("Speed");
+        //Direction_Hash = Animator.StringToHash("Direction");
+        //VerticalSpeed_Hash = Animator.StringToHash("VerticalSpeed");
     }
 
     private void Update()
@@ -120,7 +120,7 @@ public class PlayerControl : MonoBehaviour
         Rotate();
         CalculateVeclocity();
         SwitchPlayerState();
-        SetAnimator();
+        //SetAnimator();
         CheckAroundInteract();
         
     }
@@ -279,34 +279,32 @@ public class PlayerControl : MonoBehaviour
         }
         
     }
-    /// <summary>
-    /// 設置狀態機參數
-    /// </summary>
-    public void SetAnimator()
-    {
-        if (Posture == PlayerPosture.Stand)
-        {
-            animator.SetFloat(State_Hash, standThreshold);
-            switch (locomotionState)
-            {
-                case LocomotionState.Idle:
-                    animator.SetFloat(Speed_Hash, 0.0f, 0.1f, Time.deltaTime);
-                    break;
-                case LocomotionState.Walk:
-                    animator.SetFloat(Speed_Hash,  walkSpeed, 0.1f, Time.deltaTime);
-                    break;
-                case LocomotionState.Run:
-                    animator.SetFloat(Speed_Hash,  runSpeed, 0.1f, Time.deltaTime);
-                    break;
-            }
-        }
-        else if (Posture == PlayerPosture.MidAir)
-        {
-            animator.SetFloat(State_Hash, midAirThreshold);
-            animator.SetFloat(VerticalSpeed_Hash, VerticalVelocity, 0.1f, Time.deltaTime);
-        }
-        animator.SetFloat(Direction_Hash , moveAxis.x );
-    }
+
+    //public void SetAnimator()
+    //{
+    //    if (Posture == PlayerPosture.Stand)
+    //    {
+    //        animator.SetFloat(State_Hash, standThreshold);
+    //        switch (locomotionState)
+    //        {
+    //            case LocomotionState.Idle:
+    //                animator.SetFloat(Speed_Hash, 0.0f, 0.1f, Time.deltaTime);
+    //                break;
+    //            case LocomotionState.Walk:
+    //                animator.SetFloat(Speed_Hash,  walkSpeed, 0.1f, Time.deltaTime);
+    //                break;
+    //            case LocomotionState.Run:
+    //                animator.SetFloat(Speed_Hash,  runSpeed, 0.1f, Time.deltaTime);
+    //                break;
+    //        }
+    //    }
+    //    else if (Posture == PlayerPosture.MidAir)
+    //    {
+    //        animator.SetFloat(State_Hash, midAirThreshold);
+    //        animator.SetFloat(VerticalSpeed_Hash, VerticalVelocity, 0.1f, Time.deltaTime);
+    //    }
+    //    animator.SetFloat(Direction_Hash , moveAxis.x );
+    //}
 
 
     private void OnTriggerEnter(Collider other)
