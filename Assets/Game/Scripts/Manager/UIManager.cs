@@ -6,20 +6,20 @@ public class UIManager : ManagerBase
     public UIManager(GameFacade facade)
     {
         this.facade = facade;
+        canvas = facade.gameObject;
     }
     private Dictionary<UIPanelType, BasePanel> panelDict = new Dictionary<UIPanelType, BasePanel>();
     // 因為面板會有優先級  要關閉應該從最上面的進行關閉
     private Stack<BasePanel> panelStack = new Stack<BasePanel>();
 
+
+    private GameObject canvas;
     #region Override BaseManager
 
-    public override void DestroyManager()
-    {
-        Debug.Log("刪除UIManager");
-        EventManager.RemoveListener<ArchieveEndPointEvent>(LevelWin);
-    }
+    
     public override void InitManager()
     {
+        PushPanel(UIPanelType.MessagePanel);
         PushPanel(UIPanelType.TitlePanel);
         EventManager.AddEvents<ArchieveEndPointEvent>(LevelWin);
     }
@@ -101,12 +101,15 @@ public class UIManager : ManagerBase
                 case UIPanelType.LosePanel:
                     path = "UIPanel/" + "LosePanel";
                     break;
+                case UIPanelType.MessagePanel:
+                    path = "UIPanel/" + "MessagePanel";
+                    break;
                 default:
                     return null;
             }
             GameObject obj = GameObject.Instantiate(Resources.Load(path)) as GameObject;
             // TODO : Canvas的位置
-            obj.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            obj.transform.SetParent(canvas.transform, false);
             obj.GetComponent<BasePanel>().UIManager = this;
             obj.GetComponent<BasePanel>().GameFacade = facade;
             panelDict.Add(panelType, obj.GetComponent<BasePanel>());
@@ -126,11 +129,17 @@ public class UIManager : ManagerBase
         {
             PopPanel();
         }
-        panelDict.Clear();
     }
 
     public void LevelWin(ArchieveEndPointEvent evt)
     {
         PushPanel(UIPanelType.ContinuePanel);
+    }
+
+
+    public override void DestroyManager()
+    {
+        Debug.Log("刪除UIManager");
+        EventManager.RemoveListener<ArchieveEndPointEvent>(LevelWin);
     }
 }

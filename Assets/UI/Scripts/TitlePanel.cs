@@ -39,13 +39,13 @@ public class TitlePanel : BasePanel
     {
         isEasy = true;
         facade.AddActionAfterSceneLoad(ChooseMode);
-        facade.LoadScene(SceneIndex.Demo);
+        facade.LoadScene(SceneIndex.Level0);
     }
     private void BlindModeButtonCallback()
     {
         isEasy = false;
         facade.AddActionAfterSceneLoad(ChooseMode);
-        facade.LoadScene(SceneIndex.Demo);
+        facade.LoadScene(SceneIndex.Level0);
     }
 
     private void ChooseMode()
