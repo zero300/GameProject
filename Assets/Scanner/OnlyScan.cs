@@ -14,14 +14,16 @@ public class OnlyScan : MonoBehaviour
     public Material scanMat;
     public float startScanRange = 0;
     public float maxScanRange = 20;
-    public float scanWidth = 3;
+    
+    public float scanConstantTime;
     public float scanSpeed = 1;
+    public float fadeSpeed = 0.1f;
     public Color headColor;
     public Color trailColor;
 
     private bool isInScan = false;
+    private float scanWidth = 3;
     private Vector3 centerPos;
-    private float scanRadius;
     private IEnumerator scanHandler = null;
     private const float increaseFixedNumber = 2;
     private void OnEnable()
@@ -35,11 +37,10 @@ public class OnlyScan : MonoBehaviour
         {
             playerProperty = GameFacade.Instance.GetPlayerProperty();
             maxScanRange = playerProperty.maxScanRange;
-            scanWidth = playerProperty.scanWidth;
             scanSpeed = playerProperty.scanSpeed;
         }
 
-        scanRadius = startScanRange;
+        scanWidth = startScanRange;
         Camera.main.depthTextureMode = DepthTextureMode.DepthNormals;
         playerInput = player.GetComponent<PlayerInput>();
         EventManager.AddEvents<UpdateEvent>(IncreaseRadius);
@@ -50,7 +51,7 @@ public class OnlyScan : MonoBehaviour
         if (playerInput.GetKeyDownLightControl() && !isInScan)
         {
             centerPos = player.position;
-            if (scanRadius <= startScanRange)
+            if (scanWidth <= startScanRange)
             {
                 Scan();
             }
@@ -61,7 +62,6 @@ public class OnlyScan : MonoBehaviour
         if (scanMat != null && isInScan)
         {
             scanMat.SetVector("_ScanCenterPos", centerPos);
-            scanMat.SetFloat("_ScanRadius", scanRadius);
             scanMat.SetFloat("_ScanWidth", scanWidth);
             scanMat.SetColor("_HeadColor", headColor);
             scanMat.SetColor("_TrailColor", trailColor);
@@ -149,14 +149,20 @@ public class OnlyScan : MonoBehaviour
     {
 
         isInScan = true;
-        scanRadius = startScanRange;
-        while (scanRadius < maxScanRange)
+        scanWidth = startScanRange;
+        while (scanWidth < maxScanRange)
         {
-            scanRadius += scanSpeed;
+            scanWidth += scanSpeed;
+            yield return new WaitForSecondsRealtime(.01f);
+        }
+        yield return new WaitForSeconds(scanConstantTime);
+        while (scanWidth > startScanRange)
+        {
+            scanWidth -= fadeSpeed;
             yield return new WaitForSecondsRealtime(.01f);
         }
         isInScan = false;
-        scanRadius = startScanRange;
+        scanWidth = startScanRange;
     }
 
     /// <summary>
@@ -178,7 +184,6 @@ public class OnlyScan : MonoBehaviour
     public void UpdateScanDataPassCheckPoint(CheckpointEvent evt)
     {
         playerProperty.maxScanRange = maxScanRange;
-        playerProperty.scanWidth = scanWidth;
         playerProperty.scanSpeed = scanSpeed;
     }
     private void OnDestroy()

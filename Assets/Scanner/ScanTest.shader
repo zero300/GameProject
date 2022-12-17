@@ -31,7 +31,6 @@ Shader "Custom/ScanTest"
             sampler2D _MainTex;
             sampler2D _CameraDepthTexture;
             float3 _ScanCenterPos;
-            float _ScanRadius;
             float _ScanWidth;
             float4 _HeadColor;
             float4 _TrailColor;
@@ -51,10 +50,9 @@ Shader "Custom/ScanTest"
                 float4 toCameraVector = depth * i.ray;
                 float3 worldPos = _WorldSpaceCameraPos + toCameraVector;
 
-                float outerRing = _ScanRadius + _ScanWidth * 0.5;
-                float innerRing = _ScanRadius - _ScanWidth * 0.5;
+                float outer = _ScanWidth;
                 float distanceToCenter = distance(_ScanCenterPos, worldPos);
-                float value = smoothstep(innerRing, outerRing, distanceToCenter);
+                float value = smoothstep(0, outer, distanceToCenter);
                 fixed4 ringColor;
                 if (value >= 1 || value <= 0) {
                     value = 0;

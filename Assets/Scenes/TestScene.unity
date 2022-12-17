@@ -151,7 +151,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 1}
+  m_Color: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -772,8 +772,9 @@ MonoBehaviour:
   scanMat: {fileID: 2100000, guid: d2e88b3e79351d740a8c0f648c25a96b, type: 2}
   startScanRange: 0
   maxScanRange: 20
-  scanWidth: 2
+  scanConstantTime: 0
   scanSpeed: 0.5
+  fadeSpeed: 0.1
   headColor: {r: 1, g: 0, b: 0, a: 0}
   trailColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!1 &2086129832
