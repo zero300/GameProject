@@ -30,10 +30,10 @@ public class GameFacade : MonoBehaviour
         InitManagers();
     } 
     
-    void Update()
-    {
-        //UpdateManagers();
-    }
+    //void Update()
+    //{
+    //    UpdateManagers();
+    //}
 
     private void OnDestroy()
     {

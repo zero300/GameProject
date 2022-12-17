@@ -7,8 +7,10 @@ using UnityEngine.SceneManagement;
 public enum SceneIndex
 {
     Title,
-    Demo,
+    Level0,
     Level1,
+    Level2, // ≠ÏDemo
+    Level3,
 }
 public class TheSceneManager : ManagerBase
 {
