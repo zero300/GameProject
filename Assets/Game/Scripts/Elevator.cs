@@ -9,6 +9,7 @@ public class Elevator : MonoBehaviour , IInteract
     public Light uplight;
     public Light downlight;
     public GameObject SoundEffect;
+    public GameObject ControlBar;
     private int nextPos;
     private bool isMove;
     private void Awake()
@@ -32,7 +33,7 @@ public class Elevator : MonoBehaviour , IInteract
     public void Interact()
     {
         if (isMove) return;
-
+        ControlBar.GetComponent<ControllBar>().Rotate();
         StartCoroutine(ElevatorMove());
 
     }
