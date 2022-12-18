@@ -30,8 +30,8 @@ public class MessagePanel : BasePanel
     }
     IEnumerator TextFade()
     {
-        Debug.Log("確定有近來");
-        while(message.color.a > 0)
+        yield return new WaitForSecondsRealtime(2.0f);
+        while (message.color.a > 0)
         {
             message.color -= new Color(0 , 0 , 0 , 0.1f);
             yield return new WaitForSecondsRealtime(0.1f);

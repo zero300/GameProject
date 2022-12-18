@@ -20,7 +20,7 @@ public class GameFacade : MonoBehaviour
     private void Awake()
     {
         if(_instance != null)
-            Destroy(_instance);
+            Destroy(_instance.gameObject);
         _instance = this;
         DontDestroyOnLoad(gameObject);
     }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum RestartMode
@@ -95,10 +94,6 @@ public class GameManager :ManagerBase
     /// </summary>
     public void RestartGame(RestartMode mode , SceneIndex index)
     {
-        
-        Debug.Log($"PlayerProperty\nMaxScanRange = {playerProperty.maxScanRange}\n" +
-            $"ScanWidth = {playerProperty.scanWidth}\n,ScanSpeed = {playerProperty.scanSpeed}");
-
         if(mode == RestartMode.FromCheckPoint) facade.AddActionAfterSceneLoad(InitPlayerPosWithSavePoint);
 
         facade.AddActionAfterSceneLoad(ChangeGlobalLight);
