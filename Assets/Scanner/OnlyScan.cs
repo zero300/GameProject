@@ -37,7 +37,9 @@ public class OnlyScan : MonoBehaviour
         {
             playerProperty = GameFacade.Instance.GetPlayerProperty();
             maxScanRange = playerProperty.maxScanRange;
+            scanConstantTime = playerProperty.scanConstantTime;
             scanSpeed = playerProperty.scanSpeed;
+            fadeSpeed = playerProperty.fadeSpeed;
         }
 
         scanWidth = startScanRange;

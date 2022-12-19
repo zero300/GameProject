@@ -61,7 +61,7 @@ Shader "Custom/ScanTest"
                 }
                 else
                 {
-                    ringColor = lerp(_TrailColor, _HeadColor, value);
+                    ringColor = lerp(_HeadColor , _TrailColor, value);
                     
                 }
                 return ringColor;
