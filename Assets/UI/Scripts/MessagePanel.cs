@@ -12,9 +12,10 @@ public class MessagePanel : BasePanel
     }
     public void ShowMessage(DisplayMessageEvent evt)
     {
+        StopCoroutine(TextFade());
         message.color = Color.white;
-        StartCoroutine(TextFade());
         message.text = evt.msg;
+        StartCoroutine(TextFade());
     }
     public override void OnEnter()
     {
