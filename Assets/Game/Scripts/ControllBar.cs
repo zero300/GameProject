@@ -10,18 +10,6 @@ public class ControllBar : MonoBehaviour
     private void Awake() {
         status = false;
     }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-        
-    }
-
     public void Rotate()
     {
         Instantiate(SoundEffect, this.transform.position, this.transform.rotation); //Create sound prefab
