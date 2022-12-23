@@ -20,6 +20,7 @@ public class OnlyScan : MonoBehaviour
     public float fadeSpeed = 0.1f;
     public Color headColor;
     public Color trailColor;
+    public GameObject SoundEffect;
 
     private bool isInScan = false;
     private float scanWidth = 3;
@@ -143,6 +144,7 @@ public class OnlyScan : MonoBehaviour
     }
     void Scan()
     {
+        Instantiate(SoundEffect, this.transform.position, this.transform.rotation); //Create sound prefab
         CheckAndBlock();
         scanHandler = ScanCoroutine();
         StartCoroutine(scanHandler);
