@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class farEnemy : MonoBehaviour
 {
+    public float alertRange;
+    public LayerMask groundLayer;
+
     public Animator ani;
     public NavMeshAgent nav;
     public GameObject Player;
@@ -13,19 +15,24 @@ public class farEnemy : MonoBehaviour
     public float attackCooldown;
 
     AnimatorStateInfo state;
-    GameObject buffer;
     Rigidbody rb;
     float attackTime = 0;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// 是否處於追逐玩家中
+    /// </summary>
+    private bool isTracing;
+
     void Start()
     {
+        EventManager.AddEvents<MakeSoundEvent>(VoiceDistanceAndAtk);
+
         ani = GetComponent<Animator>();
         nav = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         state = ani.GetCurrentAnimatorStateInfo(0);
@@ -44,7 +51,6 @@ public class farEnemy : MonoBehaviour
             }
             Vector3 dir = Player.transform.position - transform.position;
             GameObject temp = Instantiate(rock, this.transform.position + new Vector3(0, 2, 0), this.transform.rotation);
-            buffer = temp;
             temp.GetComponent<Bullet>().player = Player;
         }
 
@@ -77,5 +83,37 @@ public class farEnemy : MonoBehaviour
             nav.isStopped = true;
             ani.SetBool("Idle", true);
         }
+    }
+
+    /// <summary>
+    /// 通過收到的聲音，判斷到底要不要追上去。
+    /// </summary>
+    private void VoiceDistanceAndAtk(MakeSoundEvent evt)
+    {
+        if (isTracing) return;
+
+        float distance = Vector3.Distance(transform.position, evt.MakeSoundPos);
+        if (distance > alertRange)
+        {
+            Debug.Log("距離外");
+            return;
+        }
+
+        //聲音與怪物中間有牆壁
+        if (Physics.Raycast(transform.position , evt.MakeSoundPos , distance
+            , groundLayer , QueryTriggerInteraction.Ignore))
+        {
+            Debug.Log("中間有牆壁");
+            return;
+        }
+
+
+        nav.destination = evt.MakeSoundPos;
+        nav.isStopped = false;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.RemoveListener<MakeSoundEvent>(VoiceDistanceAndAtk);
     }
 }

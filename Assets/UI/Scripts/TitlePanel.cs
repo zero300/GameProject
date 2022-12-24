@@ -33,7 +33,11 @@ public class TitlePanel : BasePanel
     }
     private void ExitButtonCallback()
     {
-        Application.Quit();
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.ExitPlaymode();
+        #else 
+            Application.Quit();
+        #endif
     }
     private void EasyModeButtonCallback()
     {

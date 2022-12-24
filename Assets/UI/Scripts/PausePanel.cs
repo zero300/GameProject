@@ -30,6 +30,7 @@ public class PausePanel : BasePanel
     private void ExitButtonCallback()
     {
         // TODO : 轉移到Title 或是直接關閉遊戲
+        facade.LoadScene(SceneIndex.Title);
     }
     private void GamemodeToggleCallback(bool value)
     {

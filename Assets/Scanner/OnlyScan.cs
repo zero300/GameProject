@@ -7,7 +7,6 @@ public class OnlyScan : MonoBehaviour
     public bool isTest = true;
 
     public PlayerProperty playerProperty;
-    public float coolDownOffset = 2.0f;
     public Transform player;
     private PlayerInput playerInput;
     [Header("全局掃描")]
@@ -27,7 +26,7 @@ public class OnlyScan : MonoBehaviour
     private Vector3 centerPos;
     private IEnumerator scanHandler = null;
     private const float increaseFixedNumber = 2;
-    private void OnEnable()
+    private void Awake()
     {
         if (startScanRange > maxScanRange)
             throw new Exception("CameraScanner.cs : startScanRange 不能大於 maxScanRange");
