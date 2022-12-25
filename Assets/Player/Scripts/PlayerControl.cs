@@ -39,6 +39,9 @@ public class PlayerControl : MonoBehaviour
     private float runSpeed = 2.0f;
     //private float airmoveSpeed = 0.8f;
 
+    private const float runMakeNoiseEveryXFrame = 20;
+    private float makeNoiseCount = 0;
+
     [Header("¥¬ªL°Ñ¼Æ")]
     [SerializeField] private bool isGround;
     [SerializeField] private bool isRun;
@@ -107,8 +110,6 @@ public class PlayerControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P))
             GameFacade.Instance.PushPanel(UIPanelType.PausePanel);
-        if (Input.GetKeyDown(KeyCode.L))
-            GameFacade.Instance.PushPanel(UIPanelType.LosePanel);
         if (transform.position.y < -10.0f)
         {
             Destroy(gameObject);
@@ -122,7 +123,7 @@ public class PlayerControl : MonoBehaviour
         SwitchPlayerState();
         //SetAnimator();
         CheckAroundInteract();
-        
+        RunMakeNoise();
     }
 
     //private void OnAnimatorMove()
@@ -280,6 +281,18 @@ public class PlayerControl : MonoBehaviour
         
     }
 
+    private void RunMakeNoise()
+    {
+        if(locomotionState == LocomotionState.Run)
+        {
+            makeNoiseCount += 1;
+            if(makeNoiseCount > runMakeNoiseEveryXFrame)
+            {
+                makeNoiseCount = 0;
+                EventManager.Broadcast(new MakeSoundEvent() { volumn = SoundVolumn.Medium , MakeSoundPos = transform.position });
+            }
+        }
+    }
     //public void SetAnimator()
     //{
     //    if (Posture == PlayerPosture.Stand)

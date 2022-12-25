@@ -10,7 +10,9 @@ public class GameFacade : MonoBehaviour
     //單例
     private static GameFacade _instance;
     public static GameFacade Instance{  get  { return _instance; } }
-    
+
+    public PlayerProperty playerProperty;
+
     private AudioManager _audioManager;
     private GameManager _gameManager;
     private UIManager _uimanager;
@@ -53,6 +55,8 @@ public class GameFacade : MonoBehaviour
         _gameManager.InitManager();
         _uimanager.InitManager();
         _sceneManager.InitManager();
+
+        _gameManager.InjectPlayerProperty(playerProperty);
     }
     /// <summary>
     /// 每幀更新Managers

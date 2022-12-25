@@ -35,6 +35,12 @@ public class GameManager :ManagerBase
     /// <returns></returns>
     public PlayerProperty GetPlayerProperty() => playerProperty;
     /// <summary>
+    /// 設置PlayerProperty
+    /// </summary>
+    /// <param name="pp"></param>
+    public void InjectPlayerProperty(PlayerProperty pp) => playerProperty = pp;
+
+    /// <summary>
     /// 獲取關卡模式
     /// </summary>
     /// <returns></returns>
@@ -42,7 +48,6 @@ public class GameManager :ManagerBase
 
     public override void InitManager()
     {
-        playerProperty = ScriptableObject.CreateInstance<PlayerProperty>();
         EventManager.AddEvents<CheckpointEvent>(SetSavePoint);
     }
 

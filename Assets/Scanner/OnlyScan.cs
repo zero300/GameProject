@@ -144,6 +144,7 @@ public class OnlyScan : MonoBehaviour
     void Scan()
     {
         Instantiate(SoundEffect, this.transform.position, this.transform.rotation); //Create sound prefab
+        EventManager.Broadcast(new MakeSoundEvent() { volumn = SoundVolumn.VeryLarge, MakeSoundPos = transform.position });
         CheckAndBlock();
         scanHandler = ScanCoroutine();
         StartCoroutine(scanHandler);
