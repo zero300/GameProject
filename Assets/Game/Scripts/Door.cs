@@ -77,15 +77,15 @@ public class Door : MonoBehaviour ,  IInteract
         switch (doortype)
         {
             case DoorType.TwoWay:
-                collider.size = new Vector3(collider.size.x , collider.size.y , 2);
+                collider.size = new Vector3(collider.size.x , collider.size.y , 4);
                 break;
             case DoorType.OneWay:
-                collider.size = new Vector3(collider.size.x, collider.size.y, 1);
-                collider.center = new Vector3(collider.center.x, collider.center.y , 0.5f);
+                collider.size = new Vector3(collider.size.x, collider.size.y, 2);
+                collider.center = new Vector3(collider.center.x, collider.center.y , 1.0f);
                 break;
             case DoorType.PointDoor:
-                collider.size = new Vector3(collider.size.x, collider.size.y, 1);
-                collider.center = new Vector3(collider.center.x, collider.center.y, 0.5f);
+                collider.size = new Vector3(collider.size.x, collider.size.y, 2);
+                collider.center = new Vector3(collider.center.x, collider.center.y, 1.0f);
                 canSave = true;
                 break;
         }
@@ -120,7 +120,8 @@ public class Door : MonoBehaviour ,  IInteract
     {
         isMove = true;
         light.SetActive(true);
-        
+        var evt = new MakeSoundEvent() { volumn = SoundVolumn.Little , MakeSoundPos = transform.position};
+        EventManager.Broadcast(evt);
         while (currentPos > 0)
         {
             currentPos -= openSpeed;
@@ -136,6 +137,7 @@ public class Door : MonoBehaviour ,  IInteract
         yield return new WaitUntil( () => !Physics.CheckBox(transform.position + Vector3.up * 2.0f, new Vector3(scaleOfDoor, 2.0f, 1.0f), Quaternion.identity, playerLayer));
         // Ãöªù
         light.SetActive(true);
+        EventManager.Broadcast(evt);
         while (currentPos < scaleOfDoor)
         {
             currentPos += openSpeed;

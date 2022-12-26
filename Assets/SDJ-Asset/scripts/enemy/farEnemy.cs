@@ -65,9 +65,11 @@ public class farEnemy : MonoBehaviour
         // 已經在追逐玩家  所以無視聲音
         if (isTracing) return;
 
+        float alert = evt.volumn <= SoundVolumn.Medium ? alertRange : alertRange * 2;
+
         // 距離外
         float distance = Vector3.Distance(transform.position, evt.MakeSoundPos);
-        if (distance > alertRange)
+        if (distance > alert)
         {
             Debug.Log("距離外");
             return;
@@ -157,6 +159,7 @@ public class farEnemy : MonoBehaviour
         }
         else if (Vector3.Distance(Player.transform.position, transform.position) < 2 * alertRange)
         {
+            if(!nav.hasPath) LosePlayerPos();
             nav.isStopped = false;
             ani.SetBool("Walk", true);
             if (state.IsName("WalkFWD"))

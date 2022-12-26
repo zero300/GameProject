@@ -36,7 +36,11 @@ public class Bullet : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log("collision");
+        PlayerAttributes pa = collision.gameObject.GetComponent<PlayerAttributes>();
+        if(pa is not null)
+        {
+            pa.GetHurt(10);
+        }
         Destroy(this.gameObject);
     }
 
