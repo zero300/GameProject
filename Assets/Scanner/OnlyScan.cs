@@ -40,6 +40,9 @@ public class OnlyScan : MonoBehaviour
             scanConstantTime = playerProperty.scanConstantTime;
             scanSpeed = playerProperty.scanSpeed;
             fadeSpeed = playerProperty.fadeSpeed;
+
+            headColor = playerProperty.HeadColor;
+            trailColor = playerProperty.TrailColor;
         }
 
         scanWidth = startScanRange;

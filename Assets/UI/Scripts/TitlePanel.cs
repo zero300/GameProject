@@ -5,6 +5,8 @@ public class TitlePanel : BasePanel
 {
     private Button startButton;
     private Button exitButton;
+    private Button optionButton;
+
     private Button easyModeButton;
     private Button blindModeButton;
     private bool isEasy = false;
@@ -14,14 +16,18 @@ public class TitlePanel : BasePanel
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         startButton = transform.Find("StartButton").GetComponent<Button>();
+        optionButton = transform.Find("OptionButton").GetComponent<Button>();
         exitButton = transform.Find("ExitButton").GetComponent<Button>();
+        
         easyModeButton = transform.Find("EasyModeButton").GetComponent<Button>();
         blindModeButton = transform.Find("BlindModeButton").GetComponent<Button>();
 
 
 
         startButton.onClick.AddListener(StartButtonCallback);
+        optionButton.onClick.AddListener(OptionButtonCallvack);
         exitButton.onClick.AddListener(ExitButtonCallback);
+        
         easyModeButton.onClick.AddListener(EasyModeButtonCallback);
         blindModeButton.onClick.AddListener(BlindModeButtonCallback);
     }
@@ -30,6 +36,10 @@ public class TitlePanel : BasePanel
         //facade.AddActionAfterSceneLoad(PushDemoNeedPanel);
         easyModeButton.gameObject.SetActive(true);
         blindModeButton.gameObject.SetActive(true);
+    }
+    private void OptionButtonCallvack()
+    {
+        uimanager.PushPanel(UIPanelType.OptionPanel);
     }
     private void ExitButtonCallback()
     {

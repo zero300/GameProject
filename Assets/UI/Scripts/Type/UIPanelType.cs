@@ -5,5 +5,7 @@ public enum UIPanelType
     MessagePanel,
     ContinuePanel,
     PausePanel,
-    LosePanel
+    LosePanel,
+    OptionPanel,
+    ColorChoosePanel
 }

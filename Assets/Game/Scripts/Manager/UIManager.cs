@@ -79,7 +79,6 @@ public class UIManager : ManagerBase
         // 如果字典不存在 
         if (panelDict == null)
             panelDict = new Dictionary<UIPanelType, BasePanel>();
-
         bool success = panelDict.TryGetValue(panelType, out BasePanel panel);
         if (!success)
         {
@@ -92,6 +91,9 @@ public class UIManager : ManagerBase
                 case UIPanelType.TitlePanel:
                     path = "UIPanel/" + "TitlePanel";
                     break;
+                case UIPanelType.MessagePanel:
+                    path = "UIPanel/" + "MessagePanel";
+                    break;
                 case UIPanelType.ContinuePanel:
                     path = "UIPanel/" + "ContinuePanel";
                     break;
@@ -101,8 +103,13 @@ public class UIManager : ManagerBase
                 case UIPanelType.LosePanel:
                     path = "UIPanel/" + "LosePanel";
                     break;
-                case UIPanelType.MessagePanel:
-                    path = "UIPanel/" + "MessagePanel";
+                
+                case UIPanelType.OptionPanel:
+                    path = "UIPanel/" + "OptionPanel";
+                    break;
+                case UIPanelType.ColorChoosePanel:
+                    Debug.Log("Testtttt");
+                    path = "UIPanel/" + "ColorChoosePanel";
                     break;
                 default:
                     return null;

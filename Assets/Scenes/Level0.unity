@@ -6889,7 +6889,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5626581170999221945, guid: 67499be994798b240b73e4c7990a78b7, type: 3}
       propertyPath: isTest
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5626581170999221945, guid: 67499be994798b240b73e4c7990a78b7, type: 3}
       propertyPath: player
