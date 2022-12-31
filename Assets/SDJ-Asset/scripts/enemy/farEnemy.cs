@@ -32,10 +32,15 @@ public class farEnemy : MonoBehaviour
     [SerializeField] private bool isTracing;
     [SerializeField] private bool isTraceVoice;
 
+    [Header("Sound")]
+    public GameObject SleepingSound; //Monster sound in sleeping state
+    public GameObject WakeupSound; //Monster sound when wake up
+    public GameObject FoundSound; //Monster sound when found player
+
     void Start()
     {
         EventManager.AddEvents<MakeSoundEvent>(VoiceDistanceAndAtk);
-
+        SleepingSound.SetActive(false);
         ani = GetComponent<Animator>();
         nav = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
@@ -49,9 +54,14 @@ public class farEnemy : MonoBehaviour
         if (isTracing) StartTracingPlayer();
         else
         {
+            if(Vector3.Distance(Player.transform.position, transform.position) < alertRange && _wakeUpCount <= 2) {SleepingSound.SetActive(true); }//在警戒距離內開啟睡眠音效
+            else SleepingSound.SetActive(false);
+
             if (_wakeUpCount <= 2) return;
             if(Vector3.Distance(Player.transform.position, transform.position) < alertRange)
             {
+                SleepingSound.SetActive(false); //停止睡眠音效
+                //Instantiate(WakeupSound, this.transform.position, this.transform.rotation); //發出醒來的聲音
                 FindThePlayer();
             }
         }
@@ -90,6 +100,8 @@ public class farEnemy : MonoBehaviour
 
         // 如果已經在追蹤聲音了 就不用再啟動了
         if (!isTraceVoice) StartCoroutine(GoToVoicePos());
+
+        Instantiate(FoundSound, this.transform.position, this.transform.rotation); //找到玩家後的聲音
 
         isTraceVoice = true;
         // 可以到達就過去

@@ -49,6 +49,7 @@ MonoBehaviour:
   player: {fileID: 0}
   velocity: 0.5
   waitTime: 1
+  HitSound: {fileID: 3208354714044459948, guid: 440497d77cce3094bb9b4160127b47a0, type: 3}
 --- !u!54 &1779079722142880014
 Rigidbody:
   m_ObjectHideFlags: 0

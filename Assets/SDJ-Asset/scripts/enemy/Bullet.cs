@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour
 
     public float waitTime;
     float count;
+    public GameObject HitSound;
 
 
     // Start is called before the first frame update
@@ -41,6 +42,7 @@ public class Bullet : MonoBehaviour
         {
             pa.GetHurt(10);
         }
+        Instantiate(HitSound, this.transform.position, this.transform.rotation);
         Destroy(this.gameObject);
     }
 
