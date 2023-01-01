@@ -19,6 +19,18 @@ public class PlayerInput : MonoBehaviour
         return Cursor.lockState == CursorLockMode.Locked;
     }
     /// <summary>
+    /// 返回滑鼠位置，返回值位於螢幕空間
+    /// </summary>
+    /// <returns></returns>
+    public Vector3? GetMousePosition()
+    {
+        if (CursorIsLock())
+        {
+            return Input.mousePosition;
+        }
+        return null;
+    }
+    /// <summary>
     /// 返回移動的方向
     /// </summary>
     /// <returns></returns>

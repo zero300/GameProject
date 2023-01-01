@@ -6,6 +6,9 @@ public class PlayerAttributes : MonoBehaviour
     public PlayerProperty playerProperty;
     public float currentHp;
     public float currentEnergy;
+
+    //TODO:受傷程度
+
     private void Awake()
     {
         currentHp = playerProperty.MaxHp;
@@ -21,6 +24,7 @@ public class PlayerAttributes : MonoBehaviour
         if(currentHp == 0)
         {
             // TODO : 輸遊戲
+            GameFacade.Instance.PushPanel(UIPanelType.LosePanel);
         }
     }
     /// <summary>

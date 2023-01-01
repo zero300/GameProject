@@ -31,6 +31,8 @@ public class farEnemy : MonoBehaviour
     /// </summary>
     [SerializeField] private bool isTracing;
     [SerializeField] private bool isTraceVoice;
+    [SerializeField] private bool isGameStop;
+
 
     [Header("Sound")]
     public GameObject SleepingSound; //Monster sound in sleeping state
@@ -39,7 +41,9 @@ public class farEnemy : MonoBehaviour
 
     void Start()
     {
+        isGameStop = false;
         EventManager.AddEvents<MakeSoundEvent>(VoiceDistanceAndAtk);
+        EventManager.AddEvents<ArchieveEndPointEvent>(GameLose);
         SleepingSound.SetActive(false);
         ani = GetComponent<Animator>();
         nav = GetComponent<NavMeshAgent>();
@@ -51,6 +55,10 @@ public class farEnemy : MonoBehaviour
 
     void Update()
     {
+        //遊戲結束 或遊戲暫停
+        if (isGameStop) return;
+
+
         if (isTracing) StartTracingPlayer();
         else
         {
@@ -90,13 +98,6 @@ public class farEnemy : MonoBehaviour
         nav.destination = evt.MakeSoundPos;
         nav.isStopped = true;
         _wakeUpCount++;
-
-        // 先判斷中間有沒有路
-        if (!nav.hasPath)
-        {
-            Debug.Log("沒有路可以到達");
-            return;
-        }
 
         // 如果已經在追蹤聲音了 就不用再啟動了
         if (!isTraceVoice) StartCoroutine(GoToVoicePos());
@@ -171,7 +172,6 @@ public class farEnemy : MonoBehaviour
         }
         else if (Vector3.Distance(Player.transform.position, transform.position) < 2 * alertRange)
         {
-            if(!nav.hasPath) LosePlayerPos();
             nav.isStopped = false;
             ani.SetBool("Walk", true);
             if (state.IsName("WalkFWD"))
@@ -193,8 +193,15 @@ public class farEnemy : MonoBehaviour
         nav.destination = initialPos;
     }
 
+    private void GameLose(ArchieveEndPointEvent evt)
+    {
+        isGameStop = true;
+    }
+
+
     private void OnDestroy()
     {
         EventManager.RemoveListener<MakeSoundEvent>(VoiceDistanceAndAtk);
+        EventManager.RemoveListener<ArchieveEndPointEvent>(GameLose);
     }
 }

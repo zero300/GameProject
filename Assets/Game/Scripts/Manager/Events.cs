@@ -40,7 +40,9 @@ public class MakeSoundEvent : GameEvent
     public Vector3 MakeSoundPos;
 }
 public class ArchieveEndPointEvent : GameEvent 
-{ }
+{
+    bool isWin = true;
+}
 public class DisplayMessageEvent : GameEvent 
 {
     public string msg;
