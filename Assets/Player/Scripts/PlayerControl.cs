@@ -122,7 +122,6 @@ public class PlayerControl : MonoBehaviour
         CalculateVeclocity();
         SwitchPlayerState();
         //SetAnimator();
-        CheckAroundInteract();
         RunMakeNoise();
     }
 
@@ -231,28 +230,6 @@ public class PlayerControl : MonoBehaviour
         }
     }
     /// <summary>
-    /// 查看附近的可交互物件
-    /// </summary>
-    private void CheckAroundInteract()
-    {
-        if (playerInput.GetKeyDownInteract())
-        {
-            int count = Physics.OverlapSphereNonAlloc(transform.position + characterController.center 
-                , interactCheckDistance , colliders , InteractLayer,QueryTriggerInteraction.Ignore);
-            if (count != 0)
-            {
-                for(int i = 0; i < count; i++)
-                {
-                    if (colliders[i].GetComponent<IInteract>() == null)
-                        continue;
-                    colliders[i].GetComponent<IInteract>().Interact();
-                    Debug.Log("Interact");
-                    break;
-                }
-            }
-        }
-    }
-    /// <summary>
     /// 切換當前狀態
     /// </summary>
     public void SwitchPlayerState()
@@ -280,7 +257,9 @@ public class PlayerControl : MonoBehaviour
         }
         
     }
-
+    /// <summary>
+    /// 奔跑會產生發出聲音的Event
+    /// </summary>
     private void RunMakeNoise()
     {
         if(locomotionState == LocomotionState.Run)
