@@ -62,10 +62,10 @@ public class farEnemy : MonoBehaviour
         if (isTracing) StartTracingPlayer();
         else
         {
-            if(Vector3.Distance(Player.transform.position, transform.position) < alertRange && _wakeUpCount <= 2) {SleepingSound.SetActive(true); }//在警戒距離內開啟睡眠音效
+            if(Vector3.Distance(Player.transform.position, transform.position) < alertRange && _wakeUpCount <= 5) {SleepingSound.SetActive(true); }//在警戒距離內開啟睡眠音效
             else SleepingSound.SetActive(false);
 
-            if (_wakeUpCount <= 2) return;
+            if (_wakeUpCount <= 5) return;
             if(Vector3.Distance(Player.transform.position, transform.position) < alertRange)
             {
                 SleepingSound.SetActive(false); //停止睡眠音效
@@ -100,9 +100,12 @@ public class farEnemy : MonoBehaviour
         _wakeUpCount++;
 
         // 如果已經在追蹤聲音了 就不用再啟動了
-        if (!isTraceVoice) StartCoroutine(GoToVoicePos());
-
-        Instantiate(FoundSound, this.transform.position, this.transform.rotation); //找到玩家後的聲音
+        if (!isTraceVoice) 
+        {
+            StartCoroutine(GoToVoicePos());
+            
+        }
+        
 
         isTraceVoice = true;
         // 可以到達就過去
@@ -126,6 +129,7 @@ public class farEnemy : MonoBehaviour
     /// </summary>
     private void FindThePlayer()
     {
+        Instantiate(FoundSound, this.transform.position, this.transform.rotation); //找到玩家後的聲音
         // 找到玩家前 再前往聲音處 則 關閉Coroutine
         if (isTraceVoice) StopCoroutine(GoToVoicePos());
         isTraceVoice = false;

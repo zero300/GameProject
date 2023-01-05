@@ -257,6 +257,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerProperty: {fileID: 11400000, guid: 83c5ba982f8af8c4785eee8a3b1f38f6, type: 2}
+  HurtRed: {fileID: 0}
+  MaxHp: 0
   currentHp: 0
   currentEnergy: 0
 --- !u!1 &6571683982817674210
@@ -364,6 +366,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6681642821368558570}
     m_Modifications:
+    - target: {fileID: 4497172180627411618, guid: 6257151d47fcd754898bb9db4fcd549e, type: 3}
+      propertyPath: m_Volume
+      value: 0.366
+      objectReference: {fileID: 0}
     - target: {fileID: 4497172180627411619, guid: 6257151d47fcd754898bb9db4fcd549e, type: 3}
       propertyPath: m_RootOrder
       value: 3
