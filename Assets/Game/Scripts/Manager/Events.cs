@@ -41,7 +41,7 @@ public class MakeSoundEvent : GameEvent
 }
 public class ArchieveEndPointEvent : GameEvent 
 {
-    bool isWin = true;
+    public bool isWin = true;
 }
 public class DisplayMessageEvent : GameEvent 
 {

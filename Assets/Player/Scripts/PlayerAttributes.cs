@@ -35,6 +35,7 @@ public class PlayerAttributes : MonoBehaviour
         {
             // ¿é¹CÀ¸
             GameFacade.Instance.PushPanel(UIPanelType.LosePanel);
+            EventManager.Broadcast(new ArchieveEndPointEvent() { isWin = false });
         }
     }
     /// <summary>

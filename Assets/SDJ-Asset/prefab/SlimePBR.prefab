@@ -419,7 +419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a0ea037fc731d04bbc47b95d7015717, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alertRange: 0
+  alertRange: 10
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -432,6 +432,7 @@ MonoBehaviour:
   _wakeUpCount: 0
   isTracing: 0
   isTraceVoice: 0
+  isGameStop: 0
   SleepingSound: {fileID: 1173874057978387564}
   WakeupSound: {fileID: 3918373099957957469, guid: 2e7201cf7b7aad04a9e92294bd01007a, type: 3}
   FoundSound: {fileID: 2343397894028102536, guid: 0e9d461bbf97afb4cadcc027263514ed, type: 3}
